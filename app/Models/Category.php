@@ -12,4 +12,8 @@ class Category extends Model
     public function chartOfAccounts() {
         return $this->hasMany(ChartOfAccount::class, 'category_name');
     }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

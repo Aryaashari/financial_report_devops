@@ -15,8 +15,10 @@ return new class extends Migration
             $table->unsignedInteger('code')->primary();
             $table->string('name');
             $table->string('category_name');
+            $table->unsignedBigInteger('user_id');
 
             $table->foreign('category_name')->references('name')->on('categories')->restrictOnDelete();
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

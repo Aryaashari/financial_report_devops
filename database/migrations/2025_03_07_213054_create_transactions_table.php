@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('description');
             $table->unsignedBigInteger('debit')->default(0);
             $table->unsignedBigInteger('credit')->default(0);
-
+            $table->unsignedBigInteger('user_id');
+            
             $table->foreign('coa_code')->references('code')->on('chart_of_accounts')->restrictOnDelete();
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

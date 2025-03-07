@@ -15,4 +15,8 @@ class ChartOfAccount extends Model
     public function transactions() {
         return $this->hasMany(Transaction::class, 'coa_code', 'code');
     }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

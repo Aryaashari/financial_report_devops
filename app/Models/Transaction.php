@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Transaction extends Model
+{
+    public function chartOfAccount() {
+        return $this->belongsTo(ChartOfAccount::class, 'coa_code');
+    }
+}

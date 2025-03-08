@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Enums\CategoryType;
+use App\Helpers\ResponseHelper;
 use App\Models\Category;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
@@ -25,18 +27,27 @@ class CategoryController extends Controller
     }
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'unique:categories'],
-            'type' => ['required', Rule::enum(CategoryType::class)]
-        ]);
 
-        Category::create([
-            'name' => $request->name,
-            'type' => $request->type,
-            'user_id' => Auth::user()->id
-        ]);
+        try {
+            $validator = Validator::make($request->all(),[
+                'name' => ['required', 'unique:categories'],
+                'type' => ['required', Rule::enum(CategoryType::class)]
+            ]);
 
-        return response()->json(true);
+            if ($validator->fails()) {
+                return ResponseHelper::SendValidationError($validator->errors());
+            }
+    
+            Category::create([
+                'name' => $request->name,
+                'type' => $request->type,
+                'user_id' => Auth::user()->id
+            ]);
+            
+            return ResponseHelper::SendSuccess("create category successfully");
+        } catch(Exception $error) {
+            return ResponseHelper::SendInternalServerError($error);
+        }
     }
 
     public function edit(Category $category)
@@ -46,36 +57,38 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         try {
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'name' => ['required', Rule::unique('categories', 'name')->ignore($category->name, 'name'),],
                 'type' => ['required', Rule::enum(CategoryType::class)]
             ]);
+
+            if ($validator->fails()) {
+                return ResponseHelper::SendValidationError($validator->failed());
+            }
     
             $category->update([
                 'name' => $request->name,
                 'type' => $request->type
             ]);
-    
-            return response()->json([
-                "success" => true,
-                "data" => [
-                    "name" => $category->name,
-                    "type" => $category->type
-                ]
+            
+            return ResponseHelper::SendSuccess("update category successfully", [
+                "name" => $category->name,
+                "type" => $category->type
             ]);
+
         } catch(Exception $error) {
-            Log::debug($error->getMessage());
-            return response()->json([
-                "success" => false,
-                "data" => null
-            ], 500);
+            return ResponseHelper::SendInternalServerError($error);
         }
 
     }
     public function destroy(string $name)
     {
-        Category::destroy($name);
+        try {
+            Category::destroy($name);
 
-        return;
+            return ResponseHelper::SendSuccess("delete category successfully");
+        } catch(Exception $error) {
+            return ResponseHelper::SendInternalServerError($error);
+        }
     }
 }

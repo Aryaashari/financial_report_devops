@@ -58,7 +58,7 @@
                                 icon: 'success'
                             })
                             $("#name").val("");
-                            $("#type").val("");
+                            $("#type").val("income");
                         },
                         error: function(xhr) {
                             if (xhr.status === 422) {

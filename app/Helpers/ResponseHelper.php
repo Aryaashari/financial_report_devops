@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helper;
+namespace App\Helpers;
 
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Log;
@@ -30,6 +30,7 @@ class ResponseHelper
 
     public static function SendInternalServerError($error)
     {
+        Log::debug($error->getMessage());
         $response = response()->json([
             "message" => "Internal server error"
         ], 500);

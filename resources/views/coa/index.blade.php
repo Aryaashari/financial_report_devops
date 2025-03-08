@@ -29,7 +29,7 @@
                                             class="px-2 py-1 text-white {{ $coa->category->type == \App\Enums\CategoryType::INCOME->value ? 'bg-green-500 rounded-full' : 'bg-red-500 rounded-full' }} text-xs">{{ $coa->category->type }}</span>
                                     </td>
                                     <td class="px-4 py-2 border text-center">
-                                        <a href="{{ route('category.edit', $coa->code) }}" class="px-8 py-2 bg-yellow-400 text-center text-sm font-semibold rounded-full">Edit</a>
+                                        <a href="{{ route('coa.edit', $coa->code) }}" class="px-8 py-2 bg-yellow-400 text-center text-sm font-semibold rounded-full">Edit</a>
                                         <button
                                             class="px-8 py-2 bg-red-400 text-center text-sm font-semibold rounded-full"
                                             onclick="handleDelete('{{ $coa->code }}')">Delete</button>

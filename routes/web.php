@@ -36,9 +36,9 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/', [ChartOfAccountController::class, 'index'])->name('coa.index');
         Route::get('/create', [ChartOfAccountController::class, 'create'])->name('coa.create');
-        Route::get('/edit/{code}', [ChartOfAccountController::class, 'edit'])->name('coa.edit');
+        Route::get('/edit/{chartOfAccount}', [ChartOfAccountController::class, 'edit'])->name('coa.edit');
         Route::post('/', [ChartOfAccountController::class, 'store'])->name('coa.store');
-        Route::put('/{code}', [ChartOfAccountController::class, 'update'])->name('coa.update');
+        Route::put('/{chartOfAccount}', [ChartOfAccountController::class, 'update'])->name('coa.update');
         Route::delete('/{code}', [ChartOfAccountController::class, 'destroy'])->name('coa.destroy');
 
     });

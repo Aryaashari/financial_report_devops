@@ -58,7 +58,7 @@ class CategoryController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => ['required', Rule::unique('categories', 'name')->ignore($category->name, 'name'),],
+                'name' => ['required', Rule::unique('categories', 'name')->ignore($category->name, 'name')],
                 'type' => ['required', Rule::enum(CategoryType::class)]
             ]);
 

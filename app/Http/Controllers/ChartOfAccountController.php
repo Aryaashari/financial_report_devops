@@ -54,6 +54,43 @@ class ChartOfAccountController extends Controller
         }
     }
 
+    public function edit(ChartOfAccount $chartOfAccount) {
+        $categories = Category::where('user_id', Auth::user()->id)->get();
+        $categoryOptions = collect($categories)->pluck('name', 'name')->toArray(); 
+
+        return view('coa.edit', compact('categoryOptions', 'chartOfAccount'));
+    }
+
+    public function update(Request $request, ChartOfAccount $chartOfAccount) {
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'code' => ['required', Rule::unique('chart_of_accounts', 'code')->ignore($chartOfAccount->code, 'code'), 'integer'],
+                'name' => ['required'],
+                'category_name' => ['required']
+            ]);
+
+            if ($validator->fails()) {
+                return ResponseHelper::SendValidationError($validator->errors());
+            }
+
+            $chartOfAccount->update([
+                'code' => $request->code,
+                'name' => $request->name,
+                'category_name' => $request->category_name
+            ]);
+
+            return ResponseHelper::SendSuccess("update coa successfully", [
+                'code' => $chartOfAccount->code,
+                'name' => $chartOfAccount->name,
+                'category_name' => $chartOfAccount->category_name
+            ]);
+
+        } catch(Exception $error) {
+            return ResponseHelper::SendInternalServerError($error);
+        }
+    }
+
     public function destroy(int $code) {
         try {
             ChartOfAccount::destroy($code);

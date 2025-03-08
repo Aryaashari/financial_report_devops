@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChartOfAccountController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [CategoryController::class, 'store'])->name('category.store');
         Route::put('/{category}', [CategoryController::class, 'update'])->name('category.update');
         Route::delete('/{name}', [CategoryController::class, 'destroy'])->name('category.destroy');
+
+    });
+
+    // coa routes
+    Route::prefix('coa')->group(function () {
+
+        Route::get('/', [ChartOfAccountController::class, 'index'])->name('coa.index');
+        Route::get('/create', [ChartOfAccountController::class, 'create'])->name('coa.create');
+        Route::get('/edit/{code}', [ChartOfAccountController::class, 'edit'])->name('coa.edit');
+        Route::post('/', [ChartOfAccountController::class, 'store'])->name('coa.store');
+        Route::put('/{code}', [ChartOfAccountController::class, 'update'])->name('coa.update');
+        Route::delete('/{code}', [ChartOfAccountController::class, 'destroy'])->name('coa.destroy');
 
     });
 });

@@ -8,6 +8,8 @@ class ChartOfAccount extends Model
 {
     protected $primaryKey = 'code';
 
+    protected $fillable = ['code', 'name', 'category_name', 'user_id'];
+
     public function category() {
         return $this->belongsTo(Category::class, 'category_name');
     }

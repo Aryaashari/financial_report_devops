@@ -54,4 +54,14 @@ class ChartOfAccountController extends Controller
         }
     }
 
+    public function destroy(int $code) {
+        try {
+            ChartOfAccount::destroy($code);
+
+            return ResponseHelper::SendSuccess("delete coa successfully");
+        } catch(Exception $error) {
+            return ResponseHelper::SendInternalServerError($error);
+        }
+    }
+
 }

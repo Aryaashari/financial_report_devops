@@ -48,7 +48,7 @@
 
     @push('js')
         <script>
-            function handleDelete(name) {
+            function handleDelete(code) {
                 Swal.fire({
                     title: "Are you sure?",
                     text: "You won't be able to revert this!",
@@ -62,13 +62,13 @@
                         showLoading();
                         $.ajax({
                             type: "DELETE",
-                            url: "{{ route('category.destroy', ':name') }}".replace(':name', name),
+                            url: "{{ route('coa.destroy', ':code') }}".replace(':code', code),
                             data: {
                                 _token: $('meta[name="csrf-token"]').attr('content')
                             },
                             success: function(response) {
                                 $.ajax({
-                                    url: "{{ route('category.index') }}",
+                                    url: "{{ route('coa.index') }}",
                                     type: "GET",
                                     success: function(data) {
                                         hideLoading();

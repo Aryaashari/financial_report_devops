@@ -9,6 +9,8 @@ class Category extends Model
     protected $primaryKey = 'name';
     protected $keyType = 'string';
 
+    protected $fillable = ['name', 'type', 'user_id'];
+
     public function chartOfAccounts() {
         return $this->hasMany(ChartOfAccount::class, 'category_name');
     }

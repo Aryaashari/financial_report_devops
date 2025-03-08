@@ -22,9 +22,11 @@ Route::middleware('auth')->group(function () {
     Route::prefix('categories')->group(function () {
 
         Route::get('/', [CategoryController::class, 'index'])->name('category.index');
+        Route::get('/create', [CategoryController::class, 'create'])->name('category.create');
+        Route::get('/edit/{category}', [CategoryController::class, 'edit'])->name('category.edit');
         Route::post('/', [CategoryController::class, 'store'])->name('category.store');
         Route::put('/{category}', [CategoryController::class, 'update'])->name('category.update');
-        Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+        Route::delete('/{name}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
     });
 });

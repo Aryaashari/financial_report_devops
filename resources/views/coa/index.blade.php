@@ -92,11 +92,19 @@
                             },
                             error: function(xhr) {
                                 hideLoading();
-                                Swal.fire({
-                                    title: 'Error!',
-                                    text: 'Something went errors, please try again later!',
-                                    icon: 'error'
-                                })
+                                if (xhr.status == 409) {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: xhr.responseJSON.message,
+                                        icon: 'error'
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'Something went errors, please try again later!',
+                                        icon: 'error'
+                                    })
+                                }
                             }
                         });
                     }

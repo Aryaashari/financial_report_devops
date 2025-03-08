@@ -27,10 +27,11 @@
                                             class="px-2 py-1 text-white {{ $category->type == \App\Enums\CategoryType::INCOME->value ? 'bg-green-500 rounded-full' : 'bg-red-500 rounded-full' }} text-xs">{{ $category->type }}</span>
                                     </td>
                                     <td class="px-4 py-2 border text-center">
-                                        <a href="{{ route('category.edit', $category->name) }}" class="px-8 py-2 bg-yellow-400 text-center text-sm font-semibold rounded-full">Edit</a>
+                                        <a href="{{ route('category.edit', $category->name) }}"
+                                            class="px-8 py-2 bg-yellow-400 text-center text-sm font-semibold rounded-full">Edit</a>
                                         <button
                                             class="px-8 py-2 bg-red-400 text-center text-sm font-semibold rounded-full"
-                                            onclick="tes('{{ $category->name }}')">Delete</button>
+                                            onclick="handleDelete('{{ $category->name }}')">Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -46,7 +47,7 @@
 
     @push('js')
         <script>
-            function tes(name) {
+            function handleDelete(name) {
                 Swal.fire({
                     title: "Are you sure?",
                     text: "You won't be able to revert this!",
@@ -90,11 +91,19 @@
                             },
                             error: function(xhr) {
                                 hideLoading();
-                                Swal.fire({
-                                    title: 'Error!',
-                                    text: 'Something went errors, please try again later!',
-                                    icon: 'error'
-                                })
+                                if (xhr.status == 409) {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: xhr.responseJSON.message,
+                                        icon: 'error'
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'Something went errors, please try again later!',
+                                        icon: 'error'
+                                    })
+                                }
                             }
                         });
                     }

@@ -19,11 +19,11 @@ class ResponseHelper
         return $response;
     }
 
-    public static function SendNotFound($message)
+    public static function SendErrorMessage($message, $code = 400)
     {
         $response = response()->json([
             "message" => $message
-        ], 404);
+        ], $code);
 
         return $response;
     }

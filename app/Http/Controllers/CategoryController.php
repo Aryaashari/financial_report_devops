@@ -6,6 +6,7 @@ use App\Enums\CategoryType;
 use App\Helpers\ResponseHelper;
 use App\Models\Category;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -87,6 +88,10 @@ class CategoryController extends Controller
             Category::destroy($name);
 
             return ResponseHelper::SendSuccess("delete category successfully");
+        } catch (QueryException $error) {
+            if ($error->getCode() == "23000") {
+                return ResponseHelper::SendErrorMessage("Cannot delete this category because it is linked to other records. Remove the related records first.", 409);
+            }
         } catch(Exception $error) {
             return ResponseHelper::SendInternalServerError($error);
         }

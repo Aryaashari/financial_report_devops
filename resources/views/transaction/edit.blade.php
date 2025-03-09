@@ -20,7 +20,7 @@
 
                         <div class="w-1/4">
                             <x-input-label>Chart Of Account</x-input-label>
-                            <x-select-input class="w-full" id="coa" :options="$coaOptions" />
+                            <x-select-input class="w-full" id="coa" :options="$coaOptions" :currentValue="$transaction->coa_code" />
                         </div>
 
                         <div class="w-1/4">

@@ -1,15 +1,24 @@
 <?php
 
+use App\Enums\CategoryType;
+use App\Exports\Report;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChartOfAccountController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TransactionController;
 use App\Models\Category;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::view('/export', 'exports.report');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -29,7 +38,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [CategoryController::class, 'store'])->name('category.store');
         Route::put('/{category}', [CategoryController::class, 'update'])->name('category.update');
         Route::delete('/{name}', [CategoryController::class, 'destroy'])->name('category.destroy');
-
     });
 
     // coa routes
@@ -41,7 +49,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [ChartOfAccountController::class, 'store'])->name('coa.store');
         Route::put('/{chartOfAccount}', [ChartOfAccountController::class, 'update'])->name('coa.update');
         Route::delete('/{code}', [ChartOfAccountController::class, 'destroy'])->name('coa.destroy');
-
     });
 
 
@@ -54,8 +61,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [TransactionController::class, 'store'])->name('transaction.store');
         Route::put('/{transaction}', [TransactionController::class, 'update'])->name('transaction.update');
         Route::delete('/{id}', [TransactionController::class, 'destroy'])->name('transaction.destroy');
-
     });
+    
+    Route::get('/export/download', [ReportController::class, 'export'])->name('report.export');
 });
 
 require __DIR__ . '/auth.php';

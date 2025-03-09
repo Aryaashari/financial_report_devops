@@ -29,10 +29,14 @@
                     </x-nav-link>
                 </div>
 
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex mr-20">
                     <x-nav-link :href="route('transaction.index')" :active="request()->is('transactions') || request()->is('transactions/*')">
                         {{ __('Transaction') }}
                     </x-nav-link>
+                </div>
+
+                <div class="flex items-center">
+                    <a href="{{ route('report.export') }}" class="px-8 py-2 bg-green-400 text-center text-sm font-semibold rounded-full">Generate Report</a>
                 </div>
             </div>
 

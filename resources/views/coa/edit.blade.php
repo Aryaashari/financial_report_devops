@@ -46,11 +46,12 @@
                     const code = $("#code").val();
                     const name = $("#name").val();
                     const categoryName = $("#categoryName").val();
+                    const oldCode = '{{ $chartOfAccount->code }}'
 
                     showLoading();
                     $.ajax({
                         type: "PUT",
-                        url: "{{ route('coa.update', ':chartOfAccount') }}".replace(':chartOfAccount', code),
+                        url: "{{ route('coa.update', ':chartOfAccount') }}".replace(':chartOfAccount', oldCode),
                         data: {
                             _token: $('meta[name="csrf-token"]').attr('content'),
                             name: name,

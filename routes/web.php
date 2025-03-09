@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChartOfAccountController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransactionController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,19 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [ChartOfAccountController::class, 'store'])->name('coa.store');
         Route::put('/{chartOfAccount}', [ChartOfAccountController::class, 'update'])->name('coa.update');
         Route::delete('/{code}', [ChartOfAccountController::class, 'destroy'])->name('coa.destroy');
+
+    });
+
+
+    // transaction routes
+    Route::prefix('transactions')->group(function () {
+
+        Route::get('/', [TransactionController::class, 'index'])->name('transaction.index');
+        Route::get('/create', [TransactionController::class, 'create'])->name('transaction.create');
+        Route::get('/edit/{transaction}', [TransactionController::class, 'edit'])->name('transaction.edit');
+        Route::post('/', [TransactionController::class, 'store'])->name('transaction.store');
+        Route::put('/{transaction}', [TransactionController::class, 'update'])->name('transaction.update');
+        Route::delete('/{id}', [TransactionController::class, 'destroy'])->name('transaction.destroy');
 
     });
 });

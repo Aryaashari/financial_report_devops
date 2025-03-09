@@ -22,7 +22,7 @@ class ChartOfAccountController extends Controller
     }
 
     public function create() {
-        $categories = Category::where('user_id', Auth::user()->id)->get();
+        $categories = Category::select('name')->where('user_id', Auth::user()->id)->get();
         $categoryOptions = collect($categories)->pluck('name', 'name')->toArray(); 
 
         return view('coa.create', compact('categoryOptions'));

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Category') }}
+            {{ __('Create Category') }}
         </h2>
     </x-slot>
 
@@ -58,7 +58,6 @@
                                 icon: 'success'
                             })
                             $("#name").val("");
-                            $("#type").val("income");
                         },
                         error: function(xhr) {
                             if (xhr.status === 422) {

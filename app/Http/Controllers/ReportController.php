@@ -37,6 +37,5 @@ class ReportController extends Controller
 
         $report = new Report(compact('groupedTransactions', 'categories'));
         return $report->download('report.xlsx');
-        // return view('exports.report', compact('groupedTransactions', 'categories'));
     }
 }

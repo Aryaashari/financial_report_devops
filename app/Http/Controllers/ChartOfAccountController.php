@@ -17,8 +17,12 @@ class ChartOfAccountController extends Controller
 {
     
     public function index() {
+        $totals = \App\Models\Transaction::selectRaw('SUM(credit) as total_credit, SUM(debit) as total_debit')
+                ->where('user_id', Auth::user()->id)
+                ->first();
         $chartOfAccounts = ChartOfAccount::with('category')->where('user_id', Auth::user()->id)->get();
-        return view('coa.index', compact('chartOfAccounts'));
+
+    return view('coa.index', compact('chartOfAccounts', 'totals'));
     }
 
     public function create() {

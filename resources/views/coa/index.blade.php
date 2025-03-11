@@ -8,9 +8,9 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            
                 <div class="p-6 text-gray-900">
-                    <a href="{{ route('coa.create') }}"
-                        class="px-8 py-2 bg-blue-300 text-center text-sm font-semibold mb-2">Add</a>
+                    <a href="{{ route('coa.create') }}" class="px-8 py-2 bg-blue-300 text-center text-sm font-semibold mb-2">Add</a>
                     <table class="w-full border border-gray-300 bg-white shadow-md rounded-lg">
                         <thead>
                             <tr class="bg-gray-200 text-gray-700">
@@ -25,14 +25,10 @@
                                 <tr class="hover:bg-gray-100">
                                     <td class="px-4 py-2 border">{{ $coa->code }}</td>
                                     <td class="px-4 py-2 border">{{ $coa->name }}</td>
-                                    <td class="px-4 py-2 border text-center">{{ $coa->category->name }} <span
-                                            class="px-2 py-1 text-white {{ $coa->category->type == \App\Enums\CategoryType::INCOME->value ? 'bg-green-500 rounded-full' : 'bg-red-500 rounded-full' }} text-xs">{{ $coa->category->type }}</span>
-                                    </td>
+                                    <td class="px-4 py-2 border text-center">{{ $coa->category->name }} <span class="px-2 py-1 text-white {{ $coa->category->type == \App\Enums\CategoryType::INCOME->value ? 'bg-green-500 rounded-full' : 'bg-red-500 rounded-full' }} text-xs">{{ $coa->category->type }}</span></td>
                                     <td class="px-4 py-2 border text-center">
                                         <a href="{{ route('coa.edit', $coa->code) }}" class="px-8 py-2 bg-yellow-400 text-center text-sm font-semibold rounded-full">Edit</a>
-                                        <button
-                                            class="px-8 py-2 bg-red-400 text-center text-sm font-semibold rounded-full"
-                                            onclick="handleDelete('{{ $coa->code }}')">Delete</button>
+                                        <button class="px-8 py-2 bg-red-400 text-center text-sm font-semibold rounded-full" onclick="handleDelete('{{ $coa->code }}')">Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -43,11 +39,8 @@
         </div>
     </div>
 
-
-
-
     @push('js')
-        <script>
+    <script>
             function handleDelete(code) {
                 Swal.fire({
                     title: "Are you sure?",
@@ -109,8 +102,24 @@
                         });
                     }
                 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }
         </script>
-    @endpush
 
+
+    @endpush
 </x-app-layout>

@@ -60,8 +60,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [TransactionController::class, 'store'])->name('transaction.store');
         Route::put('/{transaction}', [TransactionController::class, 'update'])->name('transaction.update');
         Route::delete('/{id}', [TransactionController::class, 'destroy'])->name('transaction.destroy');
+        Route::post('/import', [TransactionController::class, 'import'])->name('transaction.import');
     });
-    
+
     Route::get('/export/download', [ReportController::class, 'export'])->name('report.export');
 });
 

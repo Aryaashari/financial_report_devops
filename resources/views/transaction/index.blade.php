@@ -9,8 +9,22 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <a href="{{ route('transaction.create') }}"
-                        class="px-8 py-2 bg-blue-300 text-center text-sm font-semibold mb-2">Add</a>
+                    <div class="flex space-x-4">
+                        <div class="w-1/5">
+                            <a href="{{ route('transaction.create') }}"
+                               class="block px-8 py-2 bg-blue-300 text-center text-sm font-semibold mb-2 rounded-md">
+                                Add
+                            </a>
+                        </div>
+
+                        <div class="w-1/5">
+                            <button onclick="openModal()"
+                                    class="block px-8 py-2 bg-yellow-300 text-center text-sm font-semibold mb-2 rounded-md">
+                                Import
+                            </button>
+                        </div>
+                    </div>
+                    <br>
                     <table class="w-full border border-gray-300 bg-white shadow-md rounded-lg">
                         <thead>
                             <tr class="bg-gray-200 text-gray-700">
@@ -48,11 +62,80 @@
         </div>
     </div>
 
+ <!-- Modal -->
+ <div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-xl font-semibold mb-4">Upload File</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+        <div class="mb-4">
+            <input required type="file" name="file" id="file"
+                   class="block w-full text-sm text-gray-600 border border-gray-300 rounded-md cursor-pointer p-2">
+        </div>
+        <div class="mb-2">
+            <a href="{{ url('data/TemplateImport.xlsx') }}">Click here for download the template</a>
+        </div>
+        <div class="mt-4 flex justify-end">
+            <button onclick="closeModal()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400">
+                Close
+            </button>
+            <button type="button" id="import-submit" class="px-4 py-2 bg-blue-300 text-gray-800 ml-2 rounded-lg hover:bg-gray-400">
+                Submit
+            </button>
+        </div>
+        </form>
+
+    </div>
+</div>
 
 
 
     @push('js')
         <script>
+            $("#import-submit").on("click",function(){
+                closeModal();
+                showLoading();
+                let formData = new FormData();
+                formData.append("file", $("#file")[0].files[0]);
+                $.ajax({
+                    type:"POST",
+                    url:"{{ route('transaction.import') }}",
+                    data:formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    processData: false,
+                    contentType: false,
+                    success:function(){
+                        hideLoading();
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Data imported successfully!',
+                            icon: 'success'
+                        })
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    },
+                    error: function(xhr){
+                        hideLoading();
+                        console.log(xhr)
+                        console.log($('meta[name="csrf-token"]').attr('content'));
+                        Swal.fire({
+                            title: 'Failed!',
+                            text: 'Something went errors, please try again!',
+                            icon: 'error'
+                        })
+                    }
+                });
+            });
+
+            function openModal() {
+                document.getElementById('modal').classList.remove('hidden');
+            }
+
+            function closeModal() {
+                document.getElementById('modal').classList.add('hidden');
+            }
             function handleDelete(id) {
                 Swal.fire({
                     title: "Are you sure?",

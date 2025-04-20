@@ -7,6 +7,7 @@ use App\Http\Controllers\ChartOfAccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\DashboardController;
 use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
@@ -20,9 +21,7 @@ Route::get('/', function () {
 Route::view('/export', 'exports.report');
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -58,11 +57,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [TransactionController::class, 'index'])->name('transaction.index');
         Route::get('/create', [TransactionController::class, 'create'])->name('transaction.create');
         Route::get('/edit/{transaction}', [TransactionController::class, 'edit'])->name('transaction.edit');
+        Route::get('/data', [TransactionController::class, 'data'])->name('transaction.data');
         Route::post('/', [TransactionController::class, 'store'])->name('transaction.store');
         Route::put('/{transaction}', [TransactionController::class, 'update'])->name('transaction.update');
         Route::delete('/{id}', [TransactionController::class, 'destroy'])->name('transaction.destroy');
+        Route::post('/import', [TransactionController::class, 'import'])->name('transaction.import');
     });
-    
+
     Route::get('/export/download', [ReportController::class, 'export'])->name('report.export');
 });
 

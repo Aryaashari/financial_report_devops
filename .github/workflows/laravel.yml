@@ -67,6 +67,13 @@ jobs:
       uses: SonarSource/sonarcloud-github-action@v2.2.0
       with:
         projectBaseDir: .
+        args: >
+          -Dsonar.projectKey=Aryaashari_financial_report_devops
+          -Dsonar.organization=aryaashari
+          -Dsonar.sources=app
+          -Dsonar.tests=tests
+          -Dsonar.php.coverage.reportPaths=storage/coverage.xml
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 

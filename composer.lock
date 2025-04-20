@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f06b8ddb189f2971e5aae608c077ac2",
+    "content-hash": "4eb1667493d8456039d012011f9607f0",
     "packages": [
         {
             "name": "box/spout",
@@ -9825,16 +9825,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-<<<<<<< HEAD
     "platform-dev": [],
-=======
-    "platform-dev": {},
->>>>>>> aisha
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.2.0"
 }

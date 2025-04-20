@@ -124,46 +124,50 @@ class TransactionController extends Controller
     }
     public function import(Request $request)
     {
-        $request->validate([
-            'file' => 'required|mimes:xlsx,csv'
-        ]);
+        try {
+            $request->validate([
+                'file' => 'required|mimes:xlsx,csv'
+            ]);
 
-        $file = $request->file('file');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $destinationPath = public_path('temp');
-        $file->move($destinationPath, $filename);
-        $filePath = $destinationPath . '/' . $filename;
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $destinationPath = public_path('temp');
+            $file->move($destinationPath, $filename);
+            $filePath = $destinationPath . '/' . $filename;
 
-        $reader = ReaderEntityFactory::createReaderFromFile($filePath);
-        $reader->open($filePath);
-        $isFirstRow = true;
-        foreach ($reader->getSheetIterator() as $sheet) {
-            foreach ($sheet->getRowIterator() as $row) {
-                if ($isFirstRow) {
-                    $isFirstRow = false;
-                    continue;
+            $reader = ReaderEntityFactory::createReaderFromFile($filePath);
+            $reader->open($filePath);
+            $isFirstRow = true;
+            foreach ($reader->getSheetIterator() as $sheet) {
+                foreach ($sheet->getRowIterator() as $row) {
+                    if ($isFirstRow) {
+                        $isFirstRow = false;
+                        continue;
+                    }
+                    $cells = $row->toArray();
+                    $coa = ChartOfAccount::where('code',$cells[0])->where('user_id',Auth::user()->id)->first();
+                    if (!$coa) {
+                        echo("coa dengan code "+$cells[0]+" tidak di temukan!");
+                        continue;
+                    }
+                    $trx = new Transaction();
+                    $trx->coa_code = $cells[0];
+                    $trx->description = $cells[1];
+                    $trx->debit = $cells[2];
+                    $trx->credit = $cells[3];
+                    $trx->date = $cells[4] != "" ? date("Y-m-d",strtotime($cells[4])) : date('Y-m-d');
+                    $trx->created_at = date('Y-m-d H:i:s');
+                    $trx->updated_at = date('Y-m-d H:i:s');
+                    $trx->user_id = Auth::user()->id;
+                    $trx->save();
                 }
-                $cells = $row->toArray();
-                $coa = ChartOfAccount::where('code',$cells[0])->where('user_id',Auth::user()->id)->first();
-                if (!$coa) {
-                    echo("coa dengan code "+$cells[0]+" tidak di temukan!");
-                    continue;
-                }
-                $trx = new Transaction();
-                $trx->coa_code = $cells[0];
-                $trx->description = $cells[1];
-                $trx->debit = $cells[2];
-                $trx->credit = $cells[3];
-                $trx->date = $cells[4] != "" ? date("Y-m-d",strtotime($cells[4])) : date('Y-m-d');
-                $trx->created_at = date('Y-m-d H:i:s');
-                $trx->updated_at = date('Y-m-d H:i:s');
-                $trx->user_id = Auth::user()->id;
-                $trx->save();
             }
-        }
 
-        $reader->close();
-        unlink($filePath);
-        return ResponseHelper::SendSuccess("Import transaction successfully");
+            $reader->close();
+            unlink($filePath);
+            return ResponseHelper::SendSuccess("Import transaction successfully");
+        } catch (Exception $error) {
+            return ResponseHelper::SendInternalServerError($error);
+        }
     }
 }

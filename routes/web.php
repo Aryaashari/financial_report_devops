@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [TransactionController::class, 'index'])->name('transaction.index');
         Route::get('/create', [TransactionController::class, 'create'])->name('transaction.create');
         Route::get('/edit/{transaction}', [TransactionController::class, 'edit'])->name('transaction.edit');
+        Route::get('/data', [TransactionController::class, 'data'])->name('transaction.data');
         Route::post('/', [TransactionController::class, 'store'])->name('transaction.store');
         Route::put('/{transaction}', [TransactionController::class, 'update'])->name('transaction.update');
         Route::delete('/{id}', [TransactionController::class, 'destroy'])->name('transaction.destroy');

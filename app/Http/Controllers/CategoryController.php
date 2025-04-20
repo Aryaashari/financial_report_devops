@@ -19,6 +19,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::where('user_id', Auth::user()->id)->get();
+
         return view('category.index', compact('categories'));
     }
 

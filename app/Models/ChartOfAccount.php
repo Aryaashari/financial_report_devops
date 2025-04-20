@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 
 class ChartOfAccount extends Model
 {
+    use HasFactory, Notifiable;
+
     protected $primaryKey = 'code';
 
     protected $fillable = ['code', 'name', 'category_name', 'user_id'];

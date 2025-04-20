@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ChartOfAccount extends Model
 {
+    
+    use HasFactory;
+
     protected $primaryKey = 'code';
 
     protected $fillable = ['code', 'name', 'category_name', 'user_id'];

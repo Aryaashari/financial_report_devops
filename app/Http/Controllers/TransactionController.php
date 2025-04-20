@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Yajra\DataTables\DataTables;
 
 class TransactionController extends Controller
 {
@@ -120,5 +121,23 @@ class TransactionController extends Controller
         } catch (Exception $error) {
             return ResponseHelper::SendInternalServerError($error);
         }
+    }
+
+    public function data()
+    {
+        $query = Transaction::with('chartOfAccount');
+
+        return DataTables::of($query)
+            ->addColumn('coa_code', fn($row) => $row->chartOfAccount->code)
+            ->addColumn('coa_name', fn($row) => $row->chartOfAccount->name)
+            ->addColumn('action', function($row) {
+                $editUrl = route('transaction.edit', $row->id);
+                return '
+                    <a href="'.$editUrl.'" class="px-4 py-2 bg-yellow-400 text-sm font-semibold rounded-full">Edit</a>
+                    <button onclick="handleDelete('.$row->id.')" class="px-4 py-2 bg-red-400 text-sm font-semibold rounded-full">Delete</button>
+                ';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 }

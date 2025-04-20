@@ -24,8 +24,7 @@
                             </button>
                         </div>
                     </div>
-                    <br>
-                    <table class="w-full border border-gray-300 bg-white shadow-md rounded-lg">
+                    <table id="transactionTable" class="w-full border border-gray-300 bg-white rounded-lg text-center">
                         <thead>
                             <tr class="bg-gray-200 text-gray-700">
                                 <th class="px-4 py-3 cursor-pointer hover:text-blue-600">Date<span class="text-xs"> ▼</span></th>

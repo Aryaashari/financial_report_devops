@@ -3,13 +3,15 @@ FROM php:8.4-fpm
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     libpng-dev \
-    libjpeg-dev \
+    libjpeg62-turbo-dev \
     libfreetype6-dev \
     zip \
     unzip \
     git \
     curl \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    libxpm-dev \
+    libwebp-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm \
     && docker-php-ext-install pdo pdo_mysql gd zip
 
 # Install Composer

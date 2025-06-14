@@ -34,8 +34,6 @@ COPY . /var/www/html
 # Set file permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/storage/oauth-private.key \
-    && chmod -R 755 /var/www/html/storage/oauth-public.key \
     && git config --global --add safe.directory /var/www/html
 
 # Install PHP dependencies
@@ -45,7 +43,7 @@ RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoload
 RUN npm install && npm run build
 
 # Expose Laravel dev server port
-EXPOSE 8000
+EXPOSE 9000
 
 # Default command
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=9000"]

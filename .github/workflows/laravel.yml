@@ -90,14 +90,16 @@ jobs:
       - name: Build and Push Laravel Image
         uses: docker/build-push-action@v5
         with:
-          context: ./app
+          context: .
+          file: deploy/php/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/financial-report:latest
 
       - name: Build and Push NGINX Image
         uses: docker/build-push-action@v5
         with:
-          context: ./nginx
+          context: .
+          file: deploy/nginx/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/financial-report-nginx:latest
 

@@ -22,8 +22,7 @@ WORKDIR /var/www/html
 COPY . /var/www/html
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage && chmod -R 755 /var/www/html/storage/oauth-private.key && chmod -R 755 /var/www/html/storage/oauth-public.key
+RUN chown -R www-data:www-data /var/www/html
 
 # Install dependencies automatically
 RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader

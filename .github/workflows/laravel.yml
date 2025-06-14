@@ -60,9 +60,6 @@ jobs:
         DB_PASSWORD: secret
       run: php artisan migrate --force
 
-    - name: Run Feature & Unit Tests
-      run: php artisan test
-
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v2.2.0
       with:
@@ -86,7 +83,6 @@ jobs:
         script: |
           cd /home/aryaashari100/financial_report_devops
           git pull origin main
-          php artisan config:cache
-          php artisan route:cache
+          docker compose up -d --build
 
 

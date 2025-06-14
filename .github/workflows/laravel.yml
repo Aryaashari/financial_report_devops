@@ -2,7 +2,7 @@ name: Laravel
 
 on:
   push:
-    branches: [ "test-ci" ]
+    branches: [ "main" ]
 
 jobs:
   laravel-tests:
@@ -85,7 +85,7 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           cd /home/aryaashari100/financial_report_devops
-          git pull origin test-ci
+          git pull origin main
           php artisan config:cache
           php artisan route:cache
 

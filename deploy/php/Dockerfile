@@ -27,6 +27,8 @@ COPY . /var/www/html
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html
 
+RUN git config --global --add safe.directory /var/www/html
+
 # Install dependencies automatically
 RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
 

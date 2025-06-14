@@ -19,7 +19,7 @@ services:
     build:
       context: .
       dockerfile: deploy/php/Dockerfile
-    container_name: smartk_be
+    container_name: financial_report
     volumes:
       - .:/var/www/html
     depends_on:
@@ -29,7 +29,6 @@ services:
     command: >
       sh -c "php artisan key:generate --force &&
             php artisan migrate --force &&
-            php artisan config:cache &&
             php artisan serve --host=0.0.0.0 --port=8000"
     ports:
       - 8000:8000
@@ -40,7 +39,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: smartk_db
+      MYSQL_DATABASE: financial_report_db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     volumes:

@@ -1,21 +1,57 @@
 version: '3.8'
 
 services:
+  nginx:
+    image: nginx:latest
+    container_name: laravel_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - laravel-network
+
   php:
     build:
       context: .
-      dockerfile: Dockerfile
-    network_mode: "host"
-    container_name: financial_report
+      dockerfile: deploy/php/Dockerfile
+    container_name: smartk_be
     volumes:
       - .:/var/www/html
-      - laravel_storage_public:/var/www/html/storage/app/public
+    depends_on:
+      - mysql
+    networks:
+      - laravel-network
     command: >
       sh -c "php artisan key:generate --force &&
             php artisan migrate --force &&
-            php artisan storage:link &&
-            chmod -R 777 storage bootstrap/cache public/storage &&
-            php-fpm"
+            php artisan config:cache &&
+            php artisan serve --host=0.0.0.0 --port=8000"
+    ports:
+      - 8000:8000
+
+  mysql:
+    image: mysql:8.0
+    container_name: laravel_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: smartk_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./deploy/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - laravel-network
 
 volumes:
-  laravel_storage_public:
+  mysql_data:
+
+networks:
+  laravel-network:
+    driver: bridge

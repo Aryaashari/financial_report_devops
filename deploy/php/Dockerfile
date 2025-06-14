@@ -1,18 +1,16 @@
-FROM php:8.4-fpm
+FROM php:8.2-fpm
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     libpng-dev \
-    libjpeg62-turbo-dev \
+    libjpeg-dev \
     libfreetype6-dev \
     zip \
     unzip \
     git \
     curl \
-    libxpm-dev \
-    libwebp-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm \
-    && docker-php-ext-install pdo pdo_mysql gd zip
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_mysql gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -23,9 +21,9 @@ WORKDIR /var/www/html
 # Copy Laravel project
 COPY . /var/www/html
 
-# Link storage and set permissions
-RUN php artisan storage:link && \
-    chmod -R 777 storage bootstrap/cache public/storage
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage && chmod -R 755 /var/www/html/storage/oauth-private.key && chmod -R 755 /var/www/html/storage/oauth-public.key
 
 # Install dependencies automatically
 RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader

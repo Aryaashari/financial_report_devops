@@ -22,20 +22,20 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-          
+
     steps:
     - uses: actions/checkout@v4
 
     - uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0'
+        php-version: '8.2'
         extensions: mbstring, bcmath, mysql
 
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: composer install
 
     - name: Generate App Key
       run: php artisan key:generate
@@ -49,7 +49,7 @@ jobs:
         until mysqladmin ping -h"127.0.0.1" --silent; do
           sleep 1
         done
-        
+
     - name: Run Database Migrations
       env:
         DB_CONNECTION: mysql
@@ -62,4 +62,18 @@ jobs:
 
     - name: Run Feature & Unit Tests
       run: php artisan test
-      
+
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@v2.2.0
+      with:
+        projectBaseDir: .
+        args: >
+          -Dsonar.projectKey=Aryaashari_financial_report_devops
+          -Dsonar.organization=aryaashari
+          -Dsonar.sources=app
+          -Dsonar.tests=tests
+          -Dsonar.php.coverage.reportPaths=storage/coverage.xml
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+

@@ -168,6 +168,7 @@ class TransactionController extends Controller
             unlink($filePath);
             return ResponseHelper::SendSuccess("Import transaction successfully");
         } catch (Exception $error) {
+            dd($error);
             return ResponseHelper::SendInternalServerError($error);
         }
     }
